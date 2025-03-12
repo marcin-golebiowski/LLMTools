@@ -1,0 +1,257 @@
+[2025-03-12 21:12:42] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:12:42] [INFO] Checking for required Python packages...
+[2025-03-12 21:12:50] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:12:52] [INFO] Ollama is running.
+[2025-03-12 21:12:52] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:12:52] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:12:52] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:12:52] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:12:52] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:12:52] [INFO] Relevance threshold: 1
+[2025-03-12 21:12:52] [INFO] Max context documents: 5
+[2025-03-12 21:12:52] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:13:09] [INFO] Received GET request for /api/models
+[2025-03-12 21:13:09] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:14:07] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:14:07] [INFO] Checking for required Python packages...
+[2025-03-12 21:14:15] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:14:17] [INFO] Ollama is running.
+[2025-03-12 21:14:17] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:14:17] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:14:17] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:14:17] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:14:17] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:14:17] [INFO] Relevance threshold: 1
+[2025-03-12 21:14:17] [INFO] Max context documents: 5
+[2025-03-12 21:14:17] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:14:23] [INFO] Received POST request for /api/chat
+[2025-03-12 21:14:29] [ERROR] Error querying ChromaDB: Collection not found: Collection document_collection does not exist.
+[2025-03-12 21:14:32] [ERROR] Error sending chat to Ollama: Error sending chat to Ollama: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+[2025-03-12 21:14:40] [INFO] Received GET request for /api/models
+[2025-03-12 21:14:40] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:15:25] [INFO] Received GET request for /api/models
+[2025-03-12 21:15:25] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:15:35] [INFO] Received GET request for /api/models
+[2025-03-12 21:15:35] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:16:49] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:16:49] [INFO] Checking for required Python packages...
+[2025-03-12 21:16:57] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:16:59] [INFO] Ollama is running.
+[2025-03-12 21:16:59] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:16:59] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:16:59] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:16:59] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:16:59] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:16:59] [INFO] Relevance threshold: 1
+[2025-03-12 21:16:59] [INFO] Max context documents: 5
+[2025-03-12 21:16:59] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:17:00] [INFO] Received POST request for /api/models
+[2025-03-12 21:17:03] [INFO] Received GET request for /api/models
+[2025-03-12 21:17:04] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:18:00] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:18:00] [INFO] Checking for required Python packages...
+[2025-03-12 21:18:08] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:18:10] [INFO] Ollama is running.
+[2025-03-12 21:18:10] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:18:10] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:18:10] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:18:10] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:18:10] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:18:10] [INFO] Relevance threshold: 1
+[2025-03-12 21:18:10] [INFO] Max context documents: 5
+[2025-03-12 21:18:10] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:18:13] [INFO] Received POST request for /api/chat
+[2025-03-12 21:18:18] [ERROR] Error querying ChromaDB: Collection not found: Collection document_collection does not exist.
+[2025-03-12 21:18:21] [ERROR] Error sending chat to Ollama: Error sending chat to Ollama: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+[2025-03-12 21:18:21] [INFO] Received GET request for /api/models
+[2025-03-12 21:18:21] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:18:58] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:18:58] [INFO] Checking for required Python packages...
+[2025-03-12 21:19:06] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:19:08] [INFO] Ollama is running.
+[2025-03-12 21:19:08] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:19:08] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:19:08] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:19:08] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:19:08] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:19:08] [INFO] Relevance threshold: 1
+[2025-03-12 21:19:08] [INFO] Max context documents: 5
+[2025-03-12 21:19:08] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:19:09] [INFO] Received GET request for /api/models
+[2025-03-12 21:19:09] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:19:26] [INFO] Received GET request for /api/models
+[2025-03-12 21:19:26] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:19:55] [INFO] Received GET request for /api/models
+[2025-03-12 21:19:55] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:21:31] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:21:32] [INFO] Checking for required Python packages...
+[2025-03-12 21:21:40] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:21:42] [INFO] Ollama is running.
+[2025-03-12 21:21:42] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:21:42] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:21:42] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:21:42] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:21:42] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:21:42] [INFO] Relevance threshold: 1
+[2025-03-12 21:21:42] [INFO] Max context documents: 5
+[2025-03-12 21:21:42] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:21:44] [INFO] Received GET request for /api/models
+[2025-03-12 21:21:45] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:21:59] [INFO] Received GET request for /api/tags
+[2025-03-12 21:23:16] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:23:16] [INFO] Checking for required Python packages...
+[2025-03-12 21:23:24] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:23:27] [INFO] Ollama is running.
+[2025-03-12 21:23:27] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:23:27] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:23:27] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:23:27] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:23:27] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:23:27] [INFO] Relevance threshold: 1
+[2025-03-12 21:23:27] [INFO] Max context documents: 5
+[2025-03-12 21:23:27] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:23:27] [INFO] Received GET request for /api/models
+[2025-03-12 21:23:27] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:24:35] [INFO] Received GET request for /api/models
+[2025-03-12 21:24:35] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:26:47] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:26:47] [INFO] Checking for required Python packages...
+[2025-03-12 21:26:55] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:26:57] [INFO] Ollama is running.
+[2025-03-12 21:26:57] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:26:57] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:26:57] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:26:57] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:26:57] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:26:57] [INFO] Relevance threshold: 1
+[2025-03-12 21:26:57] [INFO] Max context documents: 5
+[2025-03-12 21:26:57] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:27:02] [INFO] Received GET request for /api/models
+[2025-03-12 21:27:02] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:27:09] [INFO] Received GET request for /api/models
+[2025-03-12 21:27:09] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:27:39] [INFO] Received GET request for /api/models
+[2025-03-12 21:27:39] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:28:53] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:28:53] [INFO] Checking for required Python packages...
+[2025-03-12 21:29:01] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:29:03] [INFO] Ollama is running.
+[2025-03-12 21:29:03] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:29:03] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:29:03] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:29:03] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:29:03] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:29:03] [INFO] Relevance threshold: 1
+[2025-03-12 21:29:03] [INFO] Max context documents: 5
+[2025-03-12 21:29:03] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:29:06] [INFO] Received GET request for /api/models
+[2025-03-12 21:29:06] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:30:01] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:30:01] [INFO] Checking for required Python packages...
+[2025-03-12 21:30:08] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:30:11] [INFO] Ollama is running.
+[2025-03-12 21:30:11] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.py
+[2025-03-12 21:30:11] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:30:11] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:30:11] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:30:11] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:30:11] [INFO] Relevance threshold: 1
+[2025-03-12 21:30:11] [INFO] Max context documents: 5
+[2025-03-12 21:30:11] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:30:14] [INFO] Received GET request for /api/models
+[2025-03-12 21:30:14] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.
+[2025-03-12 21:30:43] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:30:43] [INFO] Checking for required Python packages...
+[2025-03-12 21:30:51] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:30:53] [INFO] Ollama is running.
+[2025-03-12 21:30:53] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.ps1
+[2025-03-12 21:30:53] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:30:53] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:30:53] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:30:53] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:30:53] [INFO] Relevance threshold: 1
+[2025-03-12 21:30:53] [INFO] Max context documents: 5
+[2025-03-12 21:30:53] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:30:57] [INFO] Received GET request for /api/models
+[2025-03-12 21:30:57] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: . Path '', line 0, position 0.
+[2025-03-12 21:32:04] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:32:04] [INFO] Checking for required Python packages...
+[2025-03-12 21:32:12] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:32:14] [INFO] Ollama is running.
+[2025-03-12 21:32:14] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.ps1
+[2025-03-12 21:32:14] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:32:14] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:32:14] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:32:14] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:32:14] [INFO] Relevance threshold: 1
+[2025-03-12 21:32:14] [INFO] Max context documents: 5
+[2025-03-12 21:32:14] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:32:21] [INFO] Received GET request for /api/models
+[2025-03-12 21:32:21] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: . Path '', line 0, position 0.
+[2025-03-12 21:32:49] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:32:49] [INFO] Checking for required Python packages...
+[2025-03-12 21:32:57] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:32:59] [INFO] Ollama is running.
+[2025-03-12 21:32:59] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.ps1
+[2025-03-12 21:32:59] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:32:59] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:32:59] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:32:59] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:32:59] [INFO] Relevance threshold: 1
+[2025-03-12 21:32:59] [INFO] Max context documents: 5
+[2025-03-12 21:32:59] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:33:09] [INFO] Received GET request for /api/models
+[2025-03-12 21:33:09] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: . Path '', line 0, position 0.
+[2025-03-12 21:36:54] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:36:54] [INFO] Checking for required Python packages...
+[2025-03-12 21:37:02] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:37:05] [INFO] Ollama is running.
+[2025-03-12 21:37:05] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.ps1
+[2025-03-12 21:37:05] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:37:05] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:37:05] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:37:05] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:37:05] [INFO] Relevance threshold: 1
+[2025-03-12 21:37:05] [INFO] Max context documents: 5
+[2025-03-12 21:37:05] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:37:09] [INFO] Received GET request for /api/models
+[2025-03-12 21:37:09] [ERROR] Exception getting models from Ollama: Conversion from JSON failed with error: Unexpected character encountered while parsing value: . Path '', line 0, position 0.
+[2025-03-12 21:38:54] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:38:54] [INFO] Checking for required Python packages...
+[2025-03-12 21:39:02] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:39:04] [INFO] Ollama is running.
+[2025-03-12 21:39:04] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.ps1
+[2025-03-12 21:39:04] [ERROR] Fatal error in API proxy server: Exception calling "Start" with "0" argument(s): "Failed to listen on prefix 'http://localhost:8081/' because it conflicts with an existing registration on the machine."
+[2025-03-12 21:39:04] [INFO] API proxy server stopped
+[2025-03-12 21:39:17] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:39:17] [INFO] Checking for required Python packages...
+[2025-03-12 21:39:25] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:39:27] [INFO] Ollama is running.
+[2025-03-12 21:39:27] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.ps1
+[2025-03-12 21:39:27] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:39:27] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:39:27] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:39:27] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:39:27] [INFO] Relevance threshold: 1
+[2025-03-12 21:39:27] [INFO] Max context documents: 5
+[2025-03-12 21:39:27] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:39:28] [INFO] Received GET request for /api/models
+[2025-03-12 21:39:50] [INFO] Found Python: PowerShell 7.5.0
+[2025-03-12 21:39:50] [INFO] Checking for required Python packages...
+[2025-03-12 21:39:58] [INFO] Checking if Ollama is running at http://localhost:11434...
+[2025-03-12 21:40:00] [INFO] Ollama is running.
+[2025-03-12 21:40:00] [INFO] Created Python helper script at D:\LLMTools\LLMTools\api_proxy_helper.ps1
+[2025-03-12 21:40:00] [INFO] API proxy started at http://localhost:8081/
+[2025-03-12 21:40:00] [INFO] ChromaDB path: ./chroma_db
+[2025-03-12 21:40:00] [INFO] Ollama URL: http://localhost:11434
+[2025-03-12 21:40:00] [INFO] Embedding model: mxbai-embed-large:latest
+[2025-03-12 21:40:00] [INFO] Relevance threshold: 1
+[2025-03-12 21:40:00] [INFO] Max context documents: 5
+[2025-03-12 21:40:00] [INFO] Press Ctrl+C to stop the server
+[2025-03-12 21:40:05] [INFO] Received GET request for /api/models
+[2025-03-12 21:40:34] [INFO] Received POST request for /api/chat
+[2025-03-12 21:40:38] [ERROR] Error querying ChromaDB: Error querying ChromaDB: name 'Settings' is not defined
+[2025-03-12 21:40:42] [ERROR] Error sending chat to Ollama: Error sending chat to Ollama: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+[2025-03-12 21:41:16] [INFO] Received POST request for /api/chat
+[2025-03-12 21:41:20] [ERROR] Error querying ChromaDB: Error querying ChromaDB: name 'Settings' is not defined
+[2025-03-12 21:41:27] [ERROR] Error sending chat to Ollama: Error sending chat to Ollama: Extra data: line 2 column 1 (char 131)

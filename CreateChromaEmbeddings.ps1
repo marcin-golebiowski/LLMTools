@@ -3,6 +3,8 @@
 # Uses Ollama API for generating embeddings
 # Supports watch mode to monitor for file changes
 
+#Requires -Version 7.0
+
 param(
     [Parameter(Mandatory=$true)]
     [string]$FolderPath,
@@ -122,6 +124,7 @@ import argparse
 import urllib.request
 import urllib.error
 import numpy as np
+import re
 from chromadb.config import Settings
 import time
 
@@ -275,36 +278,101 @@ def process_single_file(file_path, folder_path, collection, chunk_size, model_na
         except Exception:
             pass  # Ignore errors if documents don't exist
         
+        # Split text into sentences
+        def split_into_sentences(text):
+            # Pattern for sentence boundaries: period, question mark, or exclamation mark 
+            # followed by space or newline or end of string
+            sentence_boundaries = re.compile(r'[.!?][\s\n]|[.!?]$')
+            
+            # Find all boundaries
+            boundaries = [match.start() + 1 for match in sentence_boundaries.finditer(text)]
+            
+            # Add beginning and end indices
+            boundaries = [0] + boundaries + [len(text)]
+            
+            # Create sentences
+            sentences = []
+            for i in range(len(boundaries) - 1):
+                # Get sentence from current boundary to next
+                start = boundaries[i]
+                end = boundaries[i+1]
+                
+                # Trim whitespace and add to list if not empty
+                sentence = text[start:end].strip()
+                if sentence:
+                    sentences.append(sentence)
+            
+            return sentences
+        
         # Create chunks if needed
         if len(content) > chunk_size:
-            # Chunk by character count but track line numbers
+            # Split into sentences first
+            sentences = split_into_sentences(content)
+            
+            # Create chunks of sentences, tracking line numbers
             chunks = []
             chunk_line_ranges = []
             current_chunk = ""
             current_chunk_start_line = 1
             current_line_idx = 0
+            sentence_start_line = 1
             
-            # Process line by line to track line numbers
-            while current_line_idx < len(lines):
-                line_num, line_content = lines[current_line_idx]
-                
-                # Check if adding this line would exceed chunk size
-                if len(current_chunk) + len(line_content) > chunk_size and current_chunk:
+            # Map each sentence to line numbers
+            sentence_line_map = []
+            current_line = 1
+            current_line_content = lines[0][1] if lines else ""
+            current_line_pos = 0
+            content_pos = 0
+            
+            # Create a mapping of content positions to line numbers
+            content_to_line_map = {}
+            current_pos = 0
+            for line_num, line_content in lines:
+                line_length = len(line_content)
+                for i in range(line_length):
+                    content_to_line_map[current_pos + i] = line_num
+                current_pos += line_length
+            
+            # Process sentences to form chunks
+            current_chunk = ""
+            chunk_start_pos = 0
+            chunks = []
+            chunk_line_ranges = []
+            
+            for sentence in sentences:
+                # Check if adding this sentence would exceed chunk size
+                if len(current_chunk) + len(sentence) > chunk_size and current_chunk:
                     # Store current chunk and start a new one
                     chunks.append(current_chunk)
-                    chunk_line_ranges.append((current_chunk_start_line, line_num - 1))
-                    current_chunk = line_content
-                    current_chunk_start_line = line_num
+                    
+                    # Find the start and end line numbers for this chunk
+                    chunk_start_line = content_to_line_map.get(chunk_start_pos, 1)
+                    chunk_end_pos = chunk_start_pos + len(current_chunk) - 1
+                    chunk_end_line = content_to_line_map.get(chunk_end_pos, lines[-1][0])
+                    
+                    chunk_line_ranges.append((chunk_start_line, chunk_end_line))
+                    
+                    # Start a new chunk with this sentence
+                    current_chunk = sentence
+                    chunk_start_pos = content.find(sentence)
                 else:
-                    # Add line to current chunk
-                    current_chunk += line_content
-                
-                current_line_idx += 1
+                    # Add sentence to current chunk
+                    if current_chunk:
+                        current_chunk += " " + sentence
+                    else:
+                        current_chunk = sentence
+                        chunk_start_pos = content.find(sentence)
             
             # Add the last chunk if it's not empty
             if current_chunk:
                 chunks.append(current_chunk)
-                chunk_line_ranges.append((current_chunk_start_line, lines[-1][0]))
+                
+                # Find the line range for the last chunk
+                chunk_start_line = content_to_line_map.get(chunk_start_pos, 1)
+                chunk_end_pos = chunk_start_pos + len(current_chunk) - 1
+                chunk_end_line = content_to_line_map.get(chunk_end_pos, lines[-1][0])
+                
+                chunk_line_ranges.append((chunk_start_line, chunk_end_line))
             
             # Add chunks to collection with line number metadata
             for chunk_idx, (chunk, line_range) in enumerate(zip(chunks, chunk_line_ranges)):
