@@ -2,32 +2,35 @@
 # This script monitors a specified directory for file changes and calls the upload script when files are created or modified
 
 param (
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$DirectoryToWatch,
     
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory = $false)]
     [string]$FileFilter = "*.*",
 
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory = $false)]
     [switch]$WatchCreated = $false,
     
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory = $false)]
     [switch]$WatchModified = $false,
     
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory = $false)]
     [switch]$WatchDeleted = $false,
     
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory = $false)]
     [switch]$WatchRenamed = $false,
     
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory = $false)]
     [switch]$IncludeSubdirectories = $false,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [switch]$ProcessExistingFiles = $false,
     
-    [Parameter(Mandatory=$false)]
-    [string]$LogPath = ""
+    [Parameter(Mandatory = $false)]
+    [string]$LogPath = "",
+
+    [Parameter(Mandatory = $false)]
+    [int]$DedupIntervalSeconds = 15
 )
 
 # Ensure the directory exists
@@ -70,8 +73,8 @@ if ($ProcessExistingFiles) {
         
         # Setup progress bar
         $progressParams = @{
-            Activity = "Processing existing files"
-            Status = "0% Complete"
+            Activity        = "Processing existing files"
+            Status          = "0% Complete"
             PercentComplete = 0
         }
         Write-Progress @progressParams
@@ -92,15 +95,15 @@ if ($ProcessExistingFiles) {
             
             # Upload each existing file
             $fileEventData = @{
-                FilePath = $filePath
+                FilePath   = $filePath
                 ChangeType = "Added-Existing"
             }
            
             # Process 2: Send an event
             $eventParams = @{
                 SourceIdentifier = "LLMTools.FileWatcher"
-                MessageData = $fileEventData
-                Sender = $PID
+                MessageData      = $fileEventData
+                Sender           = $PID
             }
             New-Event @eventParams
         }
@@ -124,121 +127,72 @@ $watcher.EnableRaisingEvents = $true
 
 # Collection to store event handlers
 $eventHandlers = @()
+$recentEvents = @{}
 
-# Define event handlers using a script block that calls our function
-if ($WatchCreated) {
-    $createdScriptBlock = {
-        param($Sender, $EventArgs)
-        # Allow a small delay for the file to be completely written
-        Start-Sleep -Seconds 1
-        
-        try
-        {
-            $fileEventData = @{
-                FilePath = $EventArgs.FullPath
-                ChangeType = $"Created"
+$scriptBlock = {
+    try {
+        $path = $Event.SourceEventArgs.FullPath
+        $changeType = $Event.SourceEventArgs.ChangeType
+        $events = $Event.MessageData.RecentEvents
+        $interval = $Event.MessageData.DedupIntervalSeconds
+
+        $fileEventData = @{
+            FilePath   = $path
+            ChangeType = $changeType
+        }
+
+        $eventKey = "$($fileEventData.ChangeType)|$($fileEventData.FilePath)"
+        $isDuplicate = $false
+        if ($events.ContainsKey($eventKey)) {
+            $lastTime = $events[$eventKey]
+            $timeDiff = (Get-Date) - $lastTime
+            if ($timeDiff.TotalSeconds -lt $interval) {
+                $isDuplicate = $true
             }
+        }
+
+        if ($isDuplicate -eq $false) {
             $eventParams = @{
                 SourceIdentifier = "LLMTools.FileWatcher"
-                MessageData = $fileEventData
-                Sender = $PID
+                MessageData      = $fileEventData
+                Sender           = $PID
             }
+
             New-Event @eventParams
-            Write-Host $eventParams
+            Write-Host $eventKey
+            $events[$eventKey] = Get-Date
         }
-        catch
-        {
-            Write-Log "Error: $($_.Exception.Message)"
+        else {
+            Write-Host "Duplicate event detected: $eventKey"
         }
     }
-    
-    $onCreated = Register-ObjectEvent -InputObject $watcher -EventName Created -MessageData $messageData
+    catch {
+        Write-Host "Error: $_"
+    }
+}
+
+$data = @{
+    RecentEvents = $recentEvents
+    DedupIntervalSeconds = $DedupIntervalSeconds
+}
+
+if ($WatchCreated) {
+    $onCreated = Register-ObjectEvent -InputObject $watcher -EventName Created -Action $scriptBlock -MessageData $data
     $eventHandlers += $onCreated
 }
 
 if ($WatchModified) {
-    $modifiedScriptBlock = {
-        param($Sender, $EventArgs)
-        
-        # Allow a small delay for the file to be completely written
-        Start-Sleep -Seconds 1
-        
-        try
-        {
-            $fileEventData = @{
-                FilePath = $EventArgs.FullPath
-                ChangeType = "Modified"
-            }
-            $eventParams = @{
-                SourceIdentifier = "LLMTools.FileWatcher"
-                MessageData = $fileEventData
-                Sender = $PID
-            }
-            New-Event @eventParams
-            Write-Host $eventParams
-        }
-        catch
-        {
-            Write-Host "Error: $($_)"
-        }
-    }
-    $onChanged = Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $modifiedScriptBlock 
+    $onChanged = Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $scriptBlock -MessageData $data
     $eventHandlers += $onChanged
 }
 
 if ($WatchDeleted) {
-    $deletedScriptBlock = {
-        param($Sender, $EventArgs)
-        
-        try
-        {
-            $fileEventData = @{
-                FilePath = $EventArgs.FullPath
-                ChangeType = "Deleted"
-            }
-            $eventParams = @{
-                SourceIdentifier = "LLMTools.FileWatcher"
-                MessageData = $fileEventData
-                Sender = $PID
-            }
-            New-Event @eventParams
-            Write-Host $eventParams
-        }
-        catch
-        {
-            Write-Host "Error: $($_.Exception.Message)"
-        }
-    }
-    
-    $onDeleted = Register-ObjectEvent -InputObject $watcher -EventName Deleted -Action $deletedScriptBlock
+    $onDeleted = Register-ObjectEvent -InputObject $watcher -EventName Deleted -Action $scriptBlock -MessageData $data
     $eventHandlers += $onDeleted
 }
 
 if ($WatchRenamed) {
-    $renamedScriptBlock = {
-        param($Sender, $EventArgs)
-        
-        try
-        {
-            $fileEventData = @{
-                FilePath = $EventArgs.FullPath
-                ChangeType = $"Renamed"
-            }
-            $eventParams = @{
-                SourceIdentifier = "LLMTools.FileWatcher"
-                MessageData = $fileEventData
-                Sender = $PID
-            }
-            New-Event @eventParams
-            Write-Host $eventParams
-        }
-        catch
-        {
-            Write-Host "Error: $($_.Exception.Message)"
-        }
-    }
-    
-    $onRenamed = Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action $renamedScriptBlock
+    $onRenamed = Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action $scriptBlock -MessageData $data
     $eventHandlers += $onRenamed
 }
 
