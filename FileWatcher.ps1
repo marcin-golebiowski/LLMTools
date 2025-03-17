@@ -36,7 +36,7 @@ param (
     [string]$EventName = "LLMTools.FileWatcher",
 
     [Parameter(Mandatory = $false)]
-    [string]$ApiEndpoint = "http://localhost:8080/api/file",
+    [string]$ApiEndpoint = "http://localhost:8080/",
     
     [Parameter(Mandatory = $false)]
     [int]$ApiTimeoutSeconds = 10
@@ -85,7 +85,7 @@ function Send-FileEvent {
         }
         
         # Make the request
-        $response = Invoke-RestMethod -Uri $ApiEndpoint -Method Post -Body $body -Headers $headers -TimeoutSec $ApiTimeoutSeconds -ErrorAction Stop
+        $response = Invoke-RestMethod -Uri ($ApiEndpoint + "api/file") -Method Post -Body $body -Headers $headers -TimeoutSec $ApiTimeoutSeconds -ErrorAction Stop
         
         # Log the response
         Write-Log "API Response: $($response | ConvertTo-Json -Compress)" -Level "DEBUG"
@@ -98,15 +98,43 @@ function Send-FileEvent {
     }
 }
 
+function Send-HealthCheck  {
+    try {
+        # Prepare the request body
+        $body = @{
+            FilePath = $FilePath
+            ChangeType = $ChangeType
+        } | ConvertTo-Json
+        
+        # Set headers
+        $headers = @{
+            "Content-Type" = "application/json"
+        }
+        
+        # Make the request
+        $response = Invoke-RestMethod -Uri ($ApiEndpoint + "/api/health") -Method Get -Headers $headers -TimeoutSec $ApiTimeoutSeconds -ErrorAction Stop
+        
+        # Log the response
+        Write-Log "API Response: $($response | ConvertTo-Json -Compress)" -Level "DEBUG"
+        
+        return $true
+    }
+    catch {
+        Write-Log "Error sending heath check to API: $_" -Level "ERROR"
+        return $false
+    }
+}
+
 # Test API connection
 Write-Log "Testing API connection to $ApiEndpoint..."
 try {
-    $testResult = Send-FileEvent -FilePath "test-connection" -ChangeType "TestConnection"
+    $testResult = Send-HealthCheck 
     if ($testResult) {
         Write-Log "API connection successful" -Level "INFO"
     }
     else {
-        Write-Log "API connection failed. Events will be logged but not sent to API." -Level "WARNING"
+        Write-Log "API connection failed." -Level "ERROR"
+        exit(1)
     }
 }
 catch {
