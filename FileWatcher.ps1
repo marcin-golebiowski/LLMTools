@@ -1,5 +1,5 @@
 # Directory Watcher Script
-# This script monitors a specified directory for file changes and calls the upload script when files are created or modified
+# This script monitors a specified directory for file changes and sends events to a REST API endpoint
 
 param (
     [Parameter(Mandatory = $true)]
@@ -23,14 +23,23 @@ param (
     [Parameter(Mandatory = $false)]
     [switch]$IncludeSubdirectories = $false,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [switch]$ProcessExistingFiles = $false,
     
     [Parameter(Mandatory = $false)]
     [string]$LogPath = "",
 
     [Parameter(Mandatory = $false)]
-    [int]$DedupIntervalSeconds = 15
+    [int]$DedupIntervalSeconds = 15,
+    
+    [Parameter(Mandatory = $false)]
+    [string]$EventName = "LLMTools.FileWatcher",
+
+    [Parameter(Mandatory = $false)]
+    [string]$ApiEndpoint = "http://localhost:8080/api/file",
+    
+    [Parameter(Mandatory = $false)]
+    [int]$ApiTimeoutSeconds = 10
 )
 
 # Ensure the directory exists
@@ -54,6 +63,55 @@ function Write-Log {
     if ($LogPath -ne "") {
         Add-Content -Path $LogPath -Value $logMessage
     }
+}
+
+# Function to send file events to REST API
+function Send-FileEvent {
+    param (
+        [string]$FilePath,
+        [string]$ChangeType
+    )
+    
+    try {
+        # Prepare the request body
+        $body = @{
+            FilePath = $FilePath
+            ChangeType = $ChangeType
+        } | ConvertTo-Json
+        
+        # Set headers
+        $headers = @{
+            "Content-Type" = "application/json"
+        }
+        
+        # Make the request
+        $response = Invoke-RestMethod -Uri $ApiEndpoint -Method Post -Body $body -Headers $headers -TimeoutSec $ApiTimeoutSeconds -ErrorAction Stop
+        
+        # Log the response
+        Write-Log "API Response: $($response | ConvertTo-Json -Compress)" -Level "DEBUG"
+        
+        return $true
+    }
+    catch {
+        Write-Log "Error sending file event to API: $_" -Level "ERROR"
+        return $false
+    }
+}
+
+# Test API connection
+Write-Log "Testing API connection to $ApiEndpoint..."
+try {
+    $testResult = Send-FileEvent -FilePath "test-connection" -ChangeType "TestConnection"
+    if ($testResult) {
+        Write-Log "API connection successful" -Level "INFO"
+    }
+    else {
+        Write-Log "API connection failed. Events will be logged but not sent to API." -Level "WARNING"
+    }
+}
+catch {
+    Write-Log "API connection test failed: $_" -Level "ERROR"
+    Write-Log "Events will be logged but not sent to API." -Level "WARNING"
 }
 
 Write-Log "Starting directory watcher for $DirectoryToWatch"
@@ -93,15 +151,16 @@ if ($ProcessExistingFiles) {
             
             Write-Log "[$($i+1)/$totalFiles] Processing existing file: $($file.Name)"
             
-            # Upload each existing file
+            # Send file to API
+            $result = Send-FileEvent -FilePath $filePath -ChangeType "Initial"
+            
+            # Also send PowerShell event for backward compatibility
             $fileEventData = @{
                 FilePath   = $filePath
-                ChangeType = "Added-Existing"
+                ChangeType = "Initial"
             }
-           
-            # Process 2: Send an event
             $eventParams = @{
-                SourceIdentifier = "LLMTools.FileWatcher"
+                SourceIdentifier = $EventName
                 MessageData      = $fileEventData
                 Sender           = $PID
             }
@@ -135,6 +194,10 @@ $scriptBlock = {
         $changeType = $Event.SourceEventArgs.ChangeType
         $events = $Event.MessageData.RecentEvents
         $interval = $Event.MessageData.DedupIntervalSeconds
+        $eventName = $Event.MessageData.EventName
+        $apiEndpoint = $Event.MessageData.ApiEndpoint
+        $apiTimeout = $Event.MessageData.ApiTimeoutSeconds
+        $sendEvent = $Event.MessageData.SendEvent
 
         $fileEventData = @{
             FilePath   = $path
@@ -152,14 +215,24 @@ $scriptBlock = {
         }
 
         if ($isDuplicate -eq $false) {
+            # Send to REST API
+            $result = & $sendEvent -FilePath $path -ChangeType $changeType
+            if ($result) {
+                Write-Host "Sent to API: $eventKey"
+            }
+            else {
+                Write-Host "Failed to send to API: $eventKey"
+            }
+
+            # Send PowerShell event for backward compatibility
             $eventParams = @{
-                SourceIdentifier = "LLMTools.FileWatcher"
+                SourceIdentifier = $eventName
                 MessageData      = $fileEventData
                 Sender           = $PID
             }
-
             New-Event @eventParams
-            Write-Host $eventKey
+            Write-Host "Published event $eventName : $eventKey"
+            
             $events[$eventKey] = Get-Date
         }
         else {
@@ -167,13 +240,17 @@ $scriptBlock = {
         }
     }
     catch {
-        Write-Host "Error: $_"
+        Write-Host "Error in event handler: $_"
     }
 }
 
 $data = @{
     RecentEvents = $recentEvents
     DedupIntervalSeconds = $DedupIntervalSeconds
+    EventName = $EventName
+    ApiEndpoint = $ApiEndpoint
+    ApiTimeoutSeconds = $ApiTimeoutSeconds
+    SendEvent = ${function:Send-FileEvent}
 }
 
 if ($WatchCreated) {
@@ -199,6 +276,7 @@ if ($WatchRenamed) {
 # Keep the script running until Ctrl+C is pressed
 try {
     Write-Log "Watcher started successfully. Waiting for events..."
+    Write-Log "Events will be sent to API endpoint: $ApiEndpoint"
     
     # Create a summary of what's being watched
     $watchEvents = @()

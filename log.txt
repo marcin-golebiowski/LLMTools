@@ -1,0 +1,68 @@
+[2025-03-17 20:15:16] [INFO] Named pipe server created: \\.\pipe\LLMTools
+[2025-03-17 20:15:16] [INFO] Started listening on named pipe: \\.\pipe\LLMTools
+[2025-03-17 20:15:16] [INFO] Processing with maximum 4 concurrent jobs.
+[2025-03-17 20:15:16] [INFO] Using script: .\FileWatcherConsumerHandler.ps1
+[2025-03-17 20:15:16] [INFO] Using separate processes for parallelism.
+[2025-03-17 20:15:16] [DEBUG] Waiting for client connection on pipe
+[2025-03-17 20:15:16] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:17] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:17] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:18] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:18] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:19] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:19] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:20] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:20] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:15:20] [INFO] Script terminating, cleaning up resources...
+[2025-03-17 20:15:21] [INFO] Named pipe server successfully disposed
+[2025-03-17 20:15:21] [INFO] All event handlers successfully unregistered
+[2025-03-17 20:17:22] [INFO] Named pipe server created: \\.\pipe\LLMTools
+[2025-03-17 20:17:22] [INFO] Started listening on named pipe: \\.\pipe\LLMTools
+[2025-03-17 20:17:23] [INFO] Processing with maximum 4 concurrent jobs.
+[2025-03-17 20:17:23] [INFO] Using script: .\FileWatcherConsumerHandler.ps1
+[2025-03-17 20:17:23] [INFO] Using separate processes for parallelism.
+[2025-03-17 20:17:23] [ERROR] Error beginning wait for connection: You cannot call a method on a null-valued expression.
+[2025-03-17 20:17:23] [ERROR] Failed to recreate pipe: Exception calling ".ctor" with "3" argument(s): "All pipe instances are busy."
+[2025-03-17 20:17:24] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:17:24] [ERROR] Error beginning wait for connection: You cannot call a method on a null-valued expression.
+[2025-03-17 20:17:24] [ERROR] Failed to recreate pipe: Exception calling ".ctor" with "3" argument(s): "All pipe instances are busy."
+[2025-03-17 20:17:25] [INFO] Script terminating, cleaning up resources...
+[2025-03-17 20:17:25] [INFO] All event handlers successfully unregistered
+[2025-03-17 20:18:18] [INFO] Named pipe server created: \\.\pipe\LLMTools
+[2025-03-17 20:18:18] [INFO] Started listening on named pipe: \\.\pipe\LLMTools
+[2025-03-17 20:18:18] [INFO] Processing with maximum 4 concurrent jobs.
+[2025-03-17 20:18:18] [INFO] Using script: .\FileWatcherConsumerHandler.ps1
+[2025-03-17 20:18:18] [INFO] Using separate processes for parallelism.
+[2025-03-17 20:18:18] [ERROR] Error beginning wait for connection: You cannot call a method on a null-valued expression.
+[2025-03-17 20:18:18] [ERROR] Failed to recreate pipe: Exception calling ".ctor" with "3" argument(s): "All pipe instances are busy."
+[2025-03-17 20:18:19] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:18:19] [INFO] Script terminating, cleaning up resources...
+[2025-03-17 20:18:19] [INFO] All event handlers successfully unregistered
+[2025-03-17 20:19:16] [INFO] Named pipe server created: \\.\pipe\LLMTools
+[2025-03-17 20:19:16] [INFO] Started listening on named pipe: \\.\pipe\LLMTools
+[2025-03-17 20:19:17] [INFO] Processing with maximum 4 concurrent jobs.
+[2025-03-17 20:19:17] [INFO] Using script: .\FileWatcherConsumerHandler.ps1
+[2025-03-17 20:19:17] [INFO] Using separate processes for parallelism.
+[2025-03-17 20:19:17] [ERROR] Error beginning wait for connection: You cannot call a method on a null-valued expression.
+[2025-03-17 20:19:17] [ERROR] Failed to recreate pipe: Exception calling ".ctor" with "3" argument(s): "All pipe instances are busy."
+[2025-03-17 20:19:17] [INFO] Script terminating, cleaning up resources...
+[2025-03-17 20:19:17] [INFO] All event handlers successfully unregistered
+[2025-03-17 20:19:40] [INFO] Named pipe server created: \\.\pipe\LLMTools
+[2025-03-17 20:19:40] [INFO] Started listening on named pipe: \\.\pipe\LLMTools
+[2025-03-17 20:19:40] [INFO] Processing with maximum 4 concurrent jobs.
+[2025-03-17 20:19:40] [INFO] Using script: .\FileWatcherConsumerHandler.ps1
+[2025-03-17 20:19:40] [INFO] Using separate processes for parallelism.
+[2025-03-17 20:19:40] [ERROR] Error beginning wait for connection: You cannot call a method on a null-valued expression.
+[2025-03-17 20:19:40] [ERROR] Failed to recreate pipe: Exception calling ".ctor" with "3" argument(s): "All pipe instances are busy."
+[2025-03-17 20:19:41] [INFO] Script terminating, cleaning up resources...
+[2025-03-17 20:19:41] [INFO] All event handlers successfully unregistered
+[2025-03-17 20:21:16] [INFO] Named pipe server created: \\.\pipe\LLMTools
+[2025-03-17 20:21:16] [INFO] Started listening on named pipe: \\.\pipe\LLMTools
+[2025-03-17 20:21:16] [INFO] Processing with maximum 4 concurrent jobs.
+[2025-03-17 20:21:16] [INFO] Using script: .\FileWatcherConsumerHandler.ps1
+[2025-03-17 20:21:16] [INFO] Using separate processes for parallelism.
+[2025-03-17 20:21:16] [ERROR] Error beginning wait for connection: You cannot call a method on a null-valued expression.
+[2025-03-17 20:21:16] [ERROR] Failed to recreate pipe: Exception calling ".ctor" with "3" argument(s): "All pipe instances are busy."
+[2025-03-17 20:21:17] [DEBUG] Status: Queue depth: 0, Active jobs: 0/4
+[2025-03-17 20:21:17] [INFO] Script terminating, cleaning up resources...
+[2025-03-17 20:21:17] [INFO] All event handlers successfully unregistered
