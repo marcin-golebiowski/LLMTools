@@ -46,12 +46,6 @@ if (-not (Get-Module -ListAvailable -Name Pode)) {
     try {
         Install-Module -Name Pode -Force -Scope CurrentUser
         Write-Log "Pode module installed successfully." -Level "INFO"
-# Check if Pode module is installed, if not try to install it
-if (-not (Get-Module -ListAvailable -Name Pode)) {
-    Write-Log "Pode module not found. Attempting to install..." -Level "WARN"
-    try {
-        Install-Module -Name Pode -Force -Scope CurrentUser
-        Write-Log "Pode module installed successfully." -Level "INFO"
     }
     catch {
         Write-Log "Failed to install Pode module: $_" -Level "ERROR"
