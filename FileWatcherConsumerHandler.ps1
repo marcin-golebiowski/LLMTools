@@ -1,5 +1,5 @@
 param (
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]$EventDataPath
 )
 
@@ -12,4 +12,4 @@ Write-Host "Processing file: $($eventData.FilePath) (Event: $($eventData.ChangeT
 # Your custom processing logic here...
 
 
-Add-Content -Path "loghandler.txt" -Value 
+Add-Content -Path "loghandler.txt" -Value ("Processing file: $($eventData.FilePath) (Event: $($eventData.ChangeType))")

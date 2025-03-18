@@ -83,7 +83,10 @@ try {
         # Store the context for graceful shutdown
         $stateWrapper = @{
             'Queue' = $eventQueue
-            
+            'MaxConcurrentJobs' = $MaxConcurrentJobs
+            'ActiveJobs' = $activeJobs
+            'UseJobs' = $UseJobs
+            'ScriptToExecute' = $ScriptToExecute
         }
         
         Set-PodeState -Name 'State' -Value $stateWrapper -Scope 'Server'
@@ -179,9 +182,12 @@ try {
         # Register termination handler
         Register-PodeEvent -Type Terminate -Name 'ServerTermination' -ScriptBlock {
             Write-Log "Server terminating, cleaning up resources..." -Level "INFO"
+            $state = Get-PodeState -Name 'State'
+            $useJobs = $state.UseJobs
+            $activeJobs = $state.ActiveJobs
             
             # Clean up any active jobs
-            if ($UseJobs) {
+            if ($useJobs) {
                 $activeJobs.Values | Remove-Job -Force -ErrorAction SilentlyContinue
             }
             else {
@@ -214,17 +220,24 @@ finally {
 function Process-Queue {
     # Clean up completed jobs
     $jobsToRemove = @()
+    $state = Get-PodeState -Name 'State'
+    $queue = $state.Queue
+    $maxConcurrentJobs = $state.MaxConcurrentJobs
+    $useJobs = $state.UseJobs
+    $activeJobs = $state.ActiveJobs
+    $scriptToExecute = $state.ScriptToExecute
+
     foreach ($jobId in $activeJobs.Keys) {
         $job = $activeJobs[$jobId]
         
-        if ($UseJobs -and $job.State -ne "Running") {
+        if ($useJobs -and $job.State -ne "Running") {
             # For PowerShell jobs
             $result = Receive-Job -Job $job -ErrorAction SilentlyContinue
             Remove-Job -Job $job -Force
             $jobsToRemove += $jobId
             Write-Log "Job $jobId completed: $result" -Level "INFO"
         } 
-        elseif (-not $UseJobs -and $job.HasExited) {
+        elseif (-not $useJobs -and $job.HasExited) {
             # For processes
             $jobsToRemove += $jobId
             Write-Log "Process $jobId completed with exit code: $($job.ExitCode)" -Level "INFO"
@@ -236,11 +249,11 @@ function Process-Queue {
     }
     
     # Process queue if we have capacity
-    while ($activeJobs.Count -lt $MaxConcurrentJobs -and -not $eventQueue.IsEmpty) {
+    while ($activeJobs.Count -lt $maxConcurrentJobs -and -not $eventQueue.IsEmpty) {
         $eventData = $null
-        $dequeued = $eventQueue.TryDequeue([ref]$eventData)
+        $dequeued = $queue.TryDequeue([ref]$eventData)
         
-        if ($dequeued -and $eventData -ne $null) {
+        if ($dequeued -and $null -ne $eventData) {
             Write-Log "Processing event: $($eventData.ChangeType) - $($eventData.FilePath)" -Level "INFO"
             
             # Store event data in temp JSON file to pass to script
@@ -252,14 +265,14 @@ function Process-Queue {
                 $job = Start-Job -ScriptBlock {
                     param($scriptPath, $dataPath)
                     & $scriptPath -EventDataPath $dataPath
-                } -ArgumentList $ScriptToExecute, $tempFile
+                } -ArgumentList $scriptToExecute, $tempFile
                 
                 $activeJobs[$job.Id] = $job
-                Write-Log "Started job $($job.Id) for file: $($eventData.FilePath)" -Level "INFO"
+                Write-Log "Started job $($job.Id) for file: '$($eventData.FilePath)'" -Level "INFO"
             } 
             else {
                 # Start a separate process
-                $process = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptToExecute`" -EventDataPath `"$tempFile`"" -PassThru
+                $process = Start-Process -FilePath "powershell.exe" -WindowStyle Hidden -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptToExecute`" -EventDataPath `"$tempFile`"" -PassThru
                 
                 $activeJobs[$process.Id] = $process
                 Write-Log "Started process $($process.Id) for file: $($eventData.FilePath)" -Level "INFO"
@@ -268,7 +281,7 @@ function Process-Queue {
     }
     
     # Display status
-    Write-Log "Status: Queue depth: $($eventQueue.Count), Active jobs: $($activeJobs.Count)/$MaxConcurrentJobs" -Level "DEBUG"
+    Write-Log "Status: Queue depth: $($eventQueue.Count), Active jobs: $($activeJobs.Count)/$maxConcurrentJobs" -Level "DEBUG"
 }
 
 # Handle Ctrl+C termination

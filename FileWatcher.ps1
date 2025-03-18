@@ -69,7 +69,9 @@ function Write-Log {
 function Send-FileEvent {
     param (
         [string]$FilePath,
-        [string]$ChangeType
+        [string]$ChangeType,
+        [string]$ApiEndpoint,
+        [int]$ApiTimeoutSeconds
     )
     
     try {
@@ -85,7 +87,9 @@ function Send-FileEvent {
         }
         
         # Make the request
-        $response = Invoke-RestMethod -Uri ($ApiEndpoint + "api/file") -Method Post -Body $body -Headers $headers -TimeoutSec $ApiTimeoutSeconds -ErrorAction Stop
+        $url = $ApiEndpoint + "/api/file"
+        Write-Log "$url" -Level "DEBUG"
+        $response = Invoke-RestMethod -Uri $url -Method Post -Body $body -Headers $headers -TimeoutSec $ApiTimeoutSeconds -ErrorAction Stop
         
         # Log the response
         Write-Log "API Response: $($response | ConvertTo-Json -Compress)" -Level "DEBUG"
@@ -100,12 +104,6 @@ function Send-FileEvent {
 
 function Send-HealthCheck  {
     try {
-        # Prepare the request body
-        $body = @{
-            FilePath = $FilePath
-            ChangeType = $ChangeType
-        } | ConvertTo-Json
-        
         # Set headers
         $headers = @{
             "Content-Type" = "application/json"
@@ -180,7 +178,7 @@ if ($ProcessExistingFiles) {
             Write-Log "[$($i+1)/$totalFiles] Processing existing file: $($file.Name)"
             
             # Send file to API
-            $result = Send-FileEvent -FilePath $filePath -ChangeType "Initial"
+            $result = Send-FileEvent -FilePath $filePath -ChangeType "Initial" -ApiEndpoint $ApiEndpoint -ApiTimeoutSeconds $ApiTimeoutSeconds
             
             # Also send PowerShell event for backward compatibility
             $fileEventData = @{
@@ -226,6 +224,7 @@ $scriptBlock = {
         $apiEndpoint = $Event.MessageData.ApiEndpoint
         $apiTimeout = $Event.MessageData.ApiTimeoutSeconds
         $sendEvent = $Event.MessageData.SendEvent
+        $sendEvent = $Event.MessageData.SendEvent
 
         $fileEventData = @{
             FilePath   = $path
@@ -243,16 +242,6 @@ $scriptBlock = {
         }
 
         if ($isDuplicate -eq $false) {
-            # Send to REST API
-            $result = & $sendEvent -FilePath $path -ChangeType $changeType
-            if ($result) {
-                Write-Host "Sent to API: $eventKey"
-            }
-            else {
-                Write-Host "Failed to send to API: $eventKey"
-            }
-
-            # Send PowerShell event for backward compatibility
             $eventParams = @{
                 SourceIdentifier = $eventName
                 MessageData      = $fileEventData
@@ -261,6 +250,13 @@ $scriptBlock = {
             New-Event @eventParams
             Write-Host "Published event $eventName : $eventKey"
             
+            $result = & $sendEvent -FilePath $path -ChangeType $changeType -ApiEndpoint $apiEndpoint -ApiTimeoutSeconds $apiTimeout
+            if ($result) {
+                Write-Host "Sent to API: $eventKey"
+            }
+            else {
+                Write-Host "Failed to send to API: $eventKey"
+            }
             $events[$eventKey] = Get-Date
         }
         else {
